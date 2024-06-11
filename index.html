@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Entry and GPA Calculator</title>
+    <style>
+        .hidden { display: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; text-align: left; }
+    </style>
+</head>
+<body>
+    <div id="entryForm">
+        <table>
+            <tr>
+                <td>Subject 1:</td>
+                <td><input type="number" id="subject1" min="0" max="100"></td>
+            </tr>
+            <tr>
+                <td>Subject 2:</td>
+                <td><input type="number" id="subject2" min="0" max="100"></td>
+            </tr>
+            <tr>
+                <td>Subject 3:</td>
+                <td><input type="number" id="subject3" min="0" max="100"></td>
+            </tr>
+            <tr>
+                <td>Subject 4:</td>
+                <td><input type="number" id="subject4" min="0" max="100"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button onclick="calculateGPA()">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div id="resultTable" class="hidden">
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody id="marksTableBody">
+                <!-- Marks rows will be inserted here -->
+            </tbody>
+        </table>
+        <p id="gpaResult"></p>
+    </div>
+
+    <script>
+        function calculateGPA() {
+            const marks = [
+                parseFloat(document.getElementById('subject1').value),
+                parseFloat(document.getElementById('subject2').value),
+                parseFloat(document.getElementById('subject3').value),
+                parseFloat(document.getElementById('subject4').value)
+            ];
+
+            if (marks.some(isNaN)) {
+                alert("Please enter valid marks for all subjects.");
+                return;
+            }
+
+            const totalMarks = marks.reduce((acc, mark) => acc + mark, 0);
+            const gpa = (totalMarks / marks.length).toFixed(2);
+
+            const marksTableBody = document.getElementById('marksTableBody');
+            marksTableBody.innerHTML = '';
+            marks.forEach((mark, index) => {
+                const row = document.createElement('tr');
+                const cell1 = document.createElement('td');
+                const cell2 = document.createElement('td');
+                cell1.textContent = `Subject ${index + 1}`;
+                cell2.textContent = mark;
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                marksTableBody.appendChild(row);
+            });
+
+            document.getElementById('gpaResult').textContent = `Overall GPA: ${gpa}`;
+
+            document.getElementById('entryForm').classList.add('hidden');
+            document.getElementById('resultTable').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
